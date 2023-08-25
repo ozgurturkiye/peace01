@@ -1,0 +1,169 @@
+[
+{
+    "model": "words.english",
+    "pk": 1,
+    "fields": {
+        "name": "abandon",
+        "word_type": "V",
+        "synonyms": [
+            2,
+            3
+        ],
+        "translations": [
+            1,
+            2
+        ]
+    }
+},
+{
+    "model": "words.english",
+    "pk": 2,
+    "fields": {
+        "name": "leave",
+        "word_type": "V",
+        "synonyms": [
+            1,
+            3
+        ],
+        "translations": [
+            1,
+            2
+        ]
+    }
+},
+{
+    "model": "words.english",
+    "pk": 3,
+    "fields": {
+        "name": "give up",
+        "word_type": "V",
+        "synonyms": [
+            1,
+            2
+        ],
+        "translations": [
+            1,
+            2
+        ]
+    }
+},
+{
+    "model": "words.english",
+    "pk": 4,
+    "fields": {
+        "name": "abbreviate",
+        "word_type": "V",
+        "synonyms": [],
+        "translations": [
+            3,
+            4,
+            5
+        ]
+    }
+},
+{
+    "model": "words.english",
+    "pk": 5,
+    "fields": {
+        "name": "do away with",
+        "word_type": "V",
+        "synonyms": [
+            6
+        ],
+        "translations": [
+            7
+        ]
+    }
+},
+{
+    "model": "words.english",
+    "pk": 6,
+    "fields": {
+        "name": "abolish",
+        "word_type": "V",
+        "synonyms": [
+            5
+        ],
+        "translations": [
+            6,
+            7
+        ]
+    }
+},
+{
+    "model": "words.english",
+    "pk": 7,
+    "fields": {
+        "name": "absorb",
+        "word_type": "V",
+        "synonyms": [],
+        "translations": [
+            8,
+            9
+        ]
+    }
+},
+{
+    "model": "words.turkish",
+    "pk": 1,
+    "fields": {
+        "name": "terk etmek"
+    }
+},
+{
+    "model": "words.turkish",
+    "pk": 2,
+    "fields": {
+        "name": "vaz geçmek"
+    }
+},
+{
+    "model": "words.turkish",
+    "pk": 3,
+    "fields": {
+        "name": "kısaltmak"
+    }
+},
+{
+    "model": "words.turkish",
+    "pk": 4,
+    "fields": {
+        "name": "özetlemek"
+    }
+},
+{
+    "model": "words.turkish",
+    "pk": 5,
+    "fields": {
+        "name": "sadeleştirmek"
+    }
+},
+{
+    "model": "words.turkish",
+    "pk": 6,
+    "fields": {
+        "name": "tabuları yıkmak"
+    }
+},
+{
+    "model": "words.turkish",
+    "pk": 7,
+    "fields": {
+        "name": "sona erdirmek"
+    }
+},
+{
+    "model": "words.turkish",
+    "pk": 8,
+    "fields": {
+        "name": "içine çekmek"
+    }
+},
+{
+    "model": "words.turkish",
+    "pk": 9,
+    "fields": {
+        "name": "emmek"
+    }
+}
+]
