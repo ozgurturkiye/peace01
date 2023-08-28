@@ -130,7 +130,7 @@ def wordbox_list(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(["GET", "PUT"])
+@api_view(["GET", "PUT", "DELETE"])
 @permission_classes([permissions.IsAuthenticated])
 def wordbox_detail(request, pk):
     wordbox = get_object_or_404(WordBox, pk=pk)
@@ -156,6 +156,15 @@ def wordbox_detail(request, pk):
             wordbox.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == "DELETE":
+        if request.user == wordbox.owner:
+            wordbox.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(
+            {"detail": "Error! You must be owner of WordBox to delete"},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
 
 
 @api_view(["GET", "POST"])
