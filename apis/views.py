@@ -1,5 +1,6 @@
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
+from django.db import IntegrityError
 
 from rest_framework import status, permissions
 from rest_framework.response import Response
@@ -116,14 +117,15 @@ def wordbox_list(request):
         serializer = WordBoxSerializer(data=request.data)
         if serializer.is_valid():
             serializer.validated_data["owner"] = request.user
-            print(serializer.validated_data)
             try:
+                # If you want to use serializer.save() you have to write new serializer
+                # because WordBoxSerializer is too general and accept all fields.
                 WordBox.objects.create(
                     name=serializer.validated_data["name"], owner=request.user
                 )
-            except Exception as e:
-                return Response({"detail": f"{e}"})
-            # serializer.save()
+            except IntegrityError as e:
+                return Response({"detail": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
+
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
