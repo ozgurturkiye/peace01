@@ -19,6 +19,7 @@ Here are the currently supported API Endpoints.
 | GET       | Game                       | Retrieve a single Game to play             | /api/en/games/{game_name}/start/  |
 | POST      | Game                       | Update or Create a Score in the collection | /api/en/games/{game_name}/start/  |
 | GET       | Collection of WordBox      | Retrieve WordBox in the collection         | /api/en/wordboxes/                |
+| POST      | Collection of WordBox      | Create a new WordBox in the collection     | /api/en/wordboxes/                |
 | GET       | WordBox                    | Retrieve a single WordBox                  | /api/en/wordboxes/{int:pk}/       |
 | PUT       | WordBox                    | Update a single WordBox                    | /api/en/wordboxes/{int:pk}/       |
 | DELETE    | WordBox                    | Delete a single WordBox                    | /api/en/wordboxes/{int:pk}/       |
@@ -30,6 +31,10 @@ Here are the currently supported API Endpoints.
 | GET       | Collection of WordBox/user | Retrieve a collection of user in WordBox   | /api/en/wordboxes/{int:pk}/users/ |
 | POST      | Collection of WordBox/user | Append a collection of user in the WordBox | /api/en/wordboxes/{int:pk}/users/ |
 | DELETE    | Collection of WordBox/user | Delete a collection of user in the WordBox | /api/en/wordboxes/{int:pk}/users/ |
+
+## Getting Started
+UML:
+![UML DIAGRAM](ydsa_uml.jpg)
 
 ## Who need this project?
 

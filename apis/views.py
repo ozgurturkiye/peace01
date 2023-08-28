@@ -97,19 +97,35 @@ def single_word_start(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(["GET"])
+@api_view(["GET", "POST"])
 @permission_classes([permissions.IsAuthenticated])
 def wordbox_list(request):
-    own_wordboxes = WordBox.objects.filter(owner=request.user)
-    friend_wordboxes = WordBox.objects.filter(users=request.user)
-    own_serializer = WordBoxSerializer(own_wordboxes, many=True)
-    friend_serializer = WordBoxSerializer(friend_wordboxes, many=True)
-    return Response(
-        {
-            "personal": own_serializer.data,
-            "friend": friend_serializer.data,
-        }
-    )
+    if request.method == "GET":
+        own_wordboxes = WordBox.objects.filter(owner=request.user)
+        friend_wordboxes = WordBox.objects.filter(users=request.user)
+        own_serializer = WordBoxSerializer(own_wordboxes, many=True)
+        friend_serializer = WordBoxSerializer(friend_wordboxes, many=True)
+        return Response(
+            {
+                "personal": own_serializer.data,
+                "friend": friend_serializer.data,
+            }
+        )
+
+    elif request.method == "POST":
+        serializer = WordBoxSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.validated_data["owner"] = request.user
+            print(serializer.validated_data)
+            try:
+                WordBox.objects.create(
+                    name=serializer.validated_data["name"], owner=request.user
+                )
+            except Exception as e:
+                return Response({"detail": f"{e}"})
+            # serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["GET", "PUT"])
