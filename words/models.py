@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.db.models import F
 
 
 class Turkish(models.Model):
@@ -50,7 +51,8 @@ class SingleWordGame(models.Model):
         ]
 
     def increase_number_of_play(self):
-        self.number_of_play += 1
+        """Avoiding race conditions using F() expression"""
+        self.number_of_play = F("number_of_play") + 1
         self.save()
 
     def __str__(self):
@@ -78,6 +80,9 @@ class WordBox(models.Model):
     def __str__(self):
         return f"{self.name}"
 
+    def get_users(self):
+        return ", ".join([i.username for i in self.users.all()])
+
 
 class WordBoxDetail(models.Model):
     wordbox = models.ForeignKey(WordBox, on_delete=models.CASCADE)
@@ -98,3 +103,14 @@ class WordBoxDetail(models.Model):
 
     def __str__(self):
         return f"{self.wordbox} -> {self.wordbox.owner}:{self.user} -> {self.english}"
+
+
+class Game(models.Model):
+    """
+    Stores game names.
+    """
+
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name
