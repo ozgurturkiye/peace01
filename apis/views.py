@@ -112,19 +112,32 @@ def wordbox_list(request):
     )
 
 
-@api_view(["GET"])
+@api_view(["GET", "PUT"])
 @permission_classes([permissions.IsAuthenticated])
 def wordbox_detail(request, pk):
     wordbox = get_object_or_404(WordBox, pk=pk)
-    wordboxdetail = WordBoxDetail.objects.filter(wordbox=wordbox)
-    wb_serializer = WordBoxSerializer(wordbox)
-    wbd_serializer = WordBoxDetailSerializer(wordboxdetail, many=True)
-    data = {
-        "wordbox": wb_serializer.data,
-        "wordboxdetail": wbd_serializer.data,
-        "start": request.build_absolute_uri(reverse("api:wordbox-start", args=(pk,))),
-    }
-    return Response(data)
+
+    if request.method == "GET":
+        wordboxdetail = WordBoxDetail.objects.filter(wordbox=wordbox)
+        wb_serializer = WordBoxSerializer(wordbox)
+        wbd_serializer = WordBoxDetailSerializer(wordboxdetail, many=True)
+        data = {
+            "wordbox": wb_serializer.data,
+            "wordboxdetail": wbd_serializer.data,
+            "start": request.build_absolute_uri(
+                reverse("api:wordbox-start", args=(pk,))
+            ),
+        }
+        return Response(data)
+
+    # Only name updated (Serializer will be change)
+    elif request.method == "PUT":
+        serializer = WordBoxSerializer(wordbox, data=request.data)
+        if serializer.is_valid():
+            wordbox.name = serializer.validated_data["name"]
+            wordbox.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["GET", "POST"])
@@ -230,7 +243,7 @@ def wordbox_start(request, pk):
             return Response(
                 {
                     "detail": "First you have to choose your wordbox. To start go to start page",
-                    "start": request.build_absolute_uri(reverse("wordbox-list")),
+                    "start": request.build_absolute_uri(reverse("api:wordbox-list")),
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )

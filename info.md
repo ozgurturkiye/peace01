@@ -1,7 +1,7 @@
 Fixture
 
 # Dump data
-python manage.py dumpdata words.English words.Turkish --indent 4 > words/fixtures/mydata.json
+```python manage.py dumpdata words.English words.Turkish --indent 4 > words/fixtures/mydata.json```
 
 # Load data
 python manage.py loaddata mydata.json
@@ -20,6 +20,8 @@ python manage.py dumpdata --exclude admin.logentry --exclude auth --indent 4 > e
 python manage.py dumpdata --exclude auth.permission > example.json
 
 # Using Yaml
-First -> python -m pip install PyYAML
+First -> ```python -m pip install PyYAML```
+
 python manage.py dumpdata words.English words.Turkish --format yaml> mydata.yaml
+
 python manage.py loaddata mydata.yaml

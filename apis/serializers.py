@@ -36,6 +36,8 @@ class SingleWordSerializer(serializers.Serializer):
 
 
 class WordBoxSerializer(serializers.ModelSerializer):
+    # owner = serializers.ReadOnlyField(source="owner.username")
+
     class Meta:
         model = WordBox
         fields = ["id", "name", "owner", "created_at", "words", "users"]
