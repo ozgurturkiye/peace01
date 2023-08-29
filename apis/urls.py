@@ -20,4 +20,9 @@ urlpatterns = [
         views.wordbox_word_list,
         name="wordbox-word-list",
     ),
+    path(
+        "en/wordboxes/<int:pk>/users/",
+        views.wordbox_user_list,
+        name="wordbox-user-list",
+    ),
 ]

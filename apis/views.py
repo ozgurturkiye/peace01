@@ -1,6 +1,7 @@
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
 from django.db import IntegrityError
+from django.contrib.auth import get_user_model
 
 from rest_framework import status, permissions
 from rest_framework.response import Response
@@ -16,6 +17,8 @@ from .serializers import (
     WordBoxGameEnglishSerializer,
     WordBoxGameInputSerializer,
     WordBoxWordSerializer,
+    UserSerializer,
+    WordBoxUserSerializer,
 )
 
 
@@ -327,7 +330,7 @@ def wordbox_word_list(request, pk):
 
             # To prevent too long list
             if len(incoming_words) > 100:
-                return Response({"detail": "Error! Too long word list."})
+                return Response({"detail": "Error! Too long words list."})
 
             # Get word list by name in the list
             words = English.objects.filter(name__in=incoming_words)
@@ -372,5 +375,78 @@ def wordbox_word_list(request, pk):
             # Delete selected words from WordBox
             for word in words:
                 wordbox.words.remove(word)
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["GET", "POST", "DELETE"])
+@permission_classes([permissions.IsAuthenticated])
+def wordbox_user_list(request, pk):
+    wordbox = get_object_or_404(WordBox, pk=pk)
+
+    if request.method == "GET":
+        users = wordbox.users.all()
+        print(users)
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data)
+
+    elif request.method == "POST":
+        serializer = WordBoxUserSerializer(data=request.data)
+
+        if serializer.is_valid():
+            # To prevent duplicated users cast to set
+            incoming_users = set(serializer.data["users"])
+
+            # To prevent too long list
+            if len(incoming_users) > 100:
+                return Response({"detail": "Error! Too long users list."})
+
+            # Get user list by name in the list
+            users = get_user_model().objects.filter(username__in=incoming_users)
+
+            unknown_users = []
+            for user in incoming_users:
+                if not users.filter(username=user):
+                    unknown_users.append(user)
+            if unknown_users:
+                return Response(
+                    {"detail": "Error", "unknown_users": unknown_users},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            # Add words to WordBox
+            for user in users:
+                wordbox.users.add(user)
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == "DELETE":
+        serializer = WordBoxUserSerializer(data=request.data)
+        if serializer.is_valid():
+            # To prevent duplicated word cast to set
+            incoming_users = set(serializer.data["users"])
+
+            # To prevent too long list
+            if len(incoming_users) > 100:
+                return Response({"detail": "Error! Too long users list."})
+
+            # Get user list by name in the list
+            users = get_user_model().objects.filter(
+                wordbox=wordbox, username__in=incoming_users
+            )
+
+            unknown_users = []
+            for user in incoming_users:
+                if not users.filter(username=user):
+                    unknown_users.append(user)
+            if unknown_users:
+                return Response(
+                    {"detail": "Error", "unknown_users": unknown_users},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            # Delete selected words from WordBox
+            for user in users:
+                wordbox.users.remove(user)
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
