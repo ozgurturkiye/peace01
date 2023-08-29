@@ -306,3 +306,14 @@ def wordbox_start(request, pk):
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )
+
+
+@api_view(["GET", "PUT", "DELETE"])
+@permission_classes([permissions.IsAuthenticated])
+def wordbox_word_list(request, pk):
+    wordbox = get_object_or_404(WordBox, pk=pk)
+
+    if request.method == "GET":
+        words = wordbox.words.all()
+        serializer = EnglishSerializer(words, many=True)
+        return Response(serializer.data)

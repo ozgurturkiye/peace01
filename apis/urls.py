@@ -15,4 +15,9 @@ urlpatterns = [
     path("en/wordboxes/", views.wordbox_list, name="wordbox-list"),
     path("en/wordboxes/<int:pk>/", views.wordbox_detail, name="wordbox-detail"),
     path("en/wordboxes/<int:pk>/start/", views.wordbox_start, name="wordbox-start"),
+    path(
+        "en/wordboxes/<int:pk>/words/",
+        views.wordbox_word_list,
+        name="wordbox-word-list",
+    ),
 ]
