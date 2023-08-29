@@ -45,11 +45,20 @@ def english_list(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(["GET"])
+@api_view(["GET", "PUT", "DELETE"])
 def english_detail(request, word):
     word = get_object_or_404(English, name=word)
-    serializer = EnglishSerializer(word)
-    return Response(serializer.data)
+
+    if request.method == "GET":
+        serializer = EnglishSerializer(word)
+        return Response(serializer.data)
+
+    elif request.method == "PUT":
+        serializer = EnglishSerializer(word, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["GET"])
