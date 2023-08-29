@@ -60,6 +60,15 @@ def english_detail(request, word):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    elif request.method == "DELETE":
+        if request.user.is_superuser:
+            word.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(
+            {"detail": "Error! Only admin can delete"},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
 
 @api_view(["GET"])
 def game_list(request):
