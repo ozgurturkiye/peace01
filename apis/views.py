@@ -24,11 +24,25 @@ def home(request):
     return Response({"detail": "Welcome to home page", "home": base_url})
 
 
-@api_view(["GET"])
+@api_view(["GET", "POST"])
 def english_list(request):
-    words = English.objects.all()
-    serializer = EnglishSerializer(words, many=True)
-    return Response(serializer.data)
+    if request.method == "GET":
+        words = English.objects.all()
+        serializer = EnglishSerializer(words, many=True)
+        return Response(serializer.data)
+
+    elif request.method == "POST":
+        serializer = EnglishSerializer(data=request.data)
+        if serializer.is_valid():
+            try:
+                English.objects.create(
+                    name=serializer.validated_data["name"],
+                    word_type=serializer.validated_data["word_type"],
+                )
+            except IntegrityError as e:
+                return Response({"detail": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["GET"])
