@@ -15,6 +15,7 @@ from .serializers import (
     WordBoxDetailSerializer,
     WordBoxGameEnglishSerializer,
     WordBoxGameInputSerializer,
+    WordBoxWordSerializer,
 )
 
 
@@ -308,7 +309,7 @@ def wordbox_start(request, pk):
             )
 
 
-@api_view(["GET", "PUT", "DELETE"])
+@api_view(["GET", "POST", "DELETE"])
 @permission_classes([permissions.IsAuthenticated])
 def wordbox_word_list(request, pk):
     wordbox = get_object_or_404(WordBox, pk=pk)
@@ -317,3 +318,25 @@ def wordbox_word_list(request, pk):
         words = wordbox.words.all()
         serializer = EnglishSerializer(words, many=True)
         return Response(serializer.data)
+
+    elif request.method == "POST":
+        serializer = WordBoxWordSerializer(data=request.data)
+        if serializer.is_valid():
+            # To prevent duplicated word cast to set
+            incoming_words = set(serializer.data["words"])
+
+            # Get word list by name in the list
+            words = English.objects.filter(name__in=incoming_words)
+            unknown_words = []
+            for word in incoming_words:
+                if not words.filter(name=word):
+                    unknown_words.append(word)
+            if unknown_words:
+                return Response(
+                    {"detail": "Error", "unknown_words": unknown_words},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+            for word in words:
+                wordbox.words.add(word)
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
