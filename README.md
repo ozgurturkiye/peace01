@@ -12,7 +12,7 @@ Here are the currently supported API Endpoints.
 | GET       | English                    | Retrieve a single English                  | /api/en/words/{word}/             |
 | POST      | Collection of English      | Create a new English in the collection     | /api/en/words/                    |
 | PUT       | English                    | Update an existing English                 | /api/en/words/{word}/             |
-| PATCH     | English                    | Partially update an existing English       | /api/en/words/{word}/             |
+| ~~PATCH~~ | English                    | Partially update an existing English       | /api/en/words/{word}/             |
 | DELETE    | English                    | Delete an existing English                 | /api/en/words/{word}/             |
 | GET       | Collection of Game         | Retrieve all Games in the collection       | /api/en/games/                    |
 | GET       | Game                       | Retrieve a single Game                     | /api/en/games/{game_name}/        |
