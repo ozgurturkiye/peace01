@@ -325,6 +325,10 @@ def wordbox_word_list(request, pk):
             # To prevent duplicated word cast to set
             incoming_words = set(serializer.data["words"])
 
+            # To prevent too long list
+            if len(incoming_words) > 100:
+                return Response({"detail": "Error! Too long word list."})
+
             # Get word list by name in the list
             words = English.objects.filter(name__in=incoming_words)
             unknown_words = []
@@ -336,7 +340,37 @@ def wordbox_word_list(request, pk):
                     {"detail": "Error", "unknown_words": unknown_words},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
+
+            # Add words to WordBox
             for word in words:
                 wordbox.words.add(word)
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == "DELETE":
+        serializer = WordBoxWordSerializer(data=request.data)
+        if serializer.is_valid():
+            # To prevent duplicated word cast to set
+            incoming_words = set(serializer.data["words"])
+
+            # To prevent too long list
+            if len(incoming_words) > 100:
+                return Response({"detail": "Error! Too long word list."})
+
+            # Get words in WordBox
+            words = English.objects.filter(wordbox=wordbox, name__in=incoming_words)
+            unknown_words = []
+            for word in incoming_words:
+                if not words.filter(name=word):
+                    unknown_words.append(word)
+            if unknown_words:
+                return Response(
+                    {"detail": "Error", "unknown_words": unknown_words},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            # Delete selected words from WordBox
+            for word in words:
+                wordbox.words.remove(word)
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
