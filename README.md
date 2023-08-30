@@ -17,9 +17,9 @@ Here are the currently supported API Endpoints.
 | GET       | Collection of Turkish | Retrieve a collection of Turkish from translations | /api/en/words/{word}/translations/ |
 | POST      | Collection of Turkish | Append a collection of Turkish from translations   | /api/en/words/{word}/translations/ |
 | DELETE    | Collection of Turkish | Remove a collection of Turkish from translations   | /api/en/words/{word}/translations/ |
-| GET       | Collection of English | Retrieve a collection of English from translations | /api/en/words/{word}/synonyms/     |
-| POST      | Collection of English | Append a collection of English from translations   | /api/en/words/{word}/synonyms/     |
-| DELETE    | Collection of Turkish | Remove a collection of Turkish from translations   | /api/en/words/{word}/synonyms/     |
+| GET       | Collection of English | Retrieve a collection of English from synonyms     | /api/en/words/{word}/synonyms/     |
+| POST      | Collection of English | Append a collection of English from synonyms       | /api/en/words/{word}/synonyms/     |
+| DELETE    | Collection of Turkish | Remove a collection of Turkish from synonyms       | /api/en/words/{word}/synonyms/     |
 | GET       | Collection of Game    | Retrieve all Games in the collection               | /api/en/games/                     |
 | GET       | Game                  | Retrieve a single Game                             | /api/en/games/{game_name}/         |
 | GET       | Game                  | Retrieve a single Game to play                     | /api/en/games/{game_name}/start/   |
