@@ -27,6 +27,8 @@ choices = (
     "Retrieve all words",
     "Create a new word",
     "Retrieve a single word",
+    "Update an existing word",
+    "Delete an existing word",
     "Retrieve all games",
     "Retrieve all WordBoxes",
     "Create a new WordBox",
@@ -62,6 +64,16 @@ while True:
         english = input("Word: ")
         url = f"http://127.0.0.1:8000/api/en/words/{english}/"
         r = s.get(url)
+        print(r)
+        print(json.dumps(r.json(), indent=2))
+        input("Press enter to continue...")
+
+    elif choice == "4":
+        english = input("Word: ")
+        url = f"http://127.0.0.1:8000/api/en/words/{english}/"
+        new_english = input("Enter the correct spelling: ")
+        payload = {"name": new_english}
+        r = s.put(url, json=payload)
         print(r)
         print(json.dumps(r.json(), indent=2))
         input("Press enter to continue...")
