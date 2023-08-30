@@ -65,6 +65,26 @@ while True:
         r = s.get(url)
         print(r)
         print(json.dumps(r.json(), indent=2))
+        choice = input(
+            """
+            1 - Retrieve a collection of Turkish from translations
+            2 - Append a collection of Turkish from translations
+            3 - Remove a collection of Turkish from translations
+            """
+        )
+        url += "translations/"
+        if choice == "1":
+            r = s.get(url)
+            print(r)
+            print(json.dumps(r.json(), indent=2))
+        elif choice == "2":
+            translations = input("Enter comma seperator word: ")
+            translations = translations.split(",")
+            payload = {"translations": translations}
+            r = s.post(url, json=payload)
+            print(r)
+            print(json.dumps(r.json(), indent=2))
+
         input("Press enter to continue...")
     elif choice == "4":
         english = input("Word: ")
