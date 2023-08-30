@@ -75,6 +75,7 @@ def english_detail(request, word):
     word = get_object_or_404(English, name=word)
 
     if request.method == "GET":
+        print("asdfasdf")
         serializer = EnglishSerializer(word)
         return Response(serializer.data)
 

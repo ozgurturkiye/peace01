@@ -57,5 +57,14 @@ while True:
             choice = input("To add new word press Enter or quit enter Q or q ...")
             if choice == "Q" or choice == "q":
                 break
+
+    elif choice == "3":
+        english = input("Word: ")
+        url = f"http://127.0.0.1:8000/api/en/words/{english}/"
+        r = s.get(url)
+        print(r)
+        print(json.dumps(r.json(), indent=2))
+        input("Press enter to continue...")
+
     elif choice == "Q" or choice == "q":
         break
