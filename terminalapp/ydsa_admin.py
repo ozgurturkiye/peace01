@@ -32,7 +32,7 @@ choices = (
     "Retrieve a single word",
     "Update an existing word",
     "Delete an existing word",
-    "Play Single Word Game",
+    "Play a Single Word Game",
     "Retrieve all WordBoxes",
     "Create a new WordBox",
     "Retrieve a single WordBox",
@@ -145,6 +145,14 @@ while True:
     elif choice == "7":
         url = "http://127.0.0.1:8000/api/en/wordboxes/"
         r = s.get(url)
+        print(json.dumps(r.json(), indent=2))
+        input("Press enter to continue...")
+    elif choice == "8":
+        url = "http://127.0.0.1:8000/api/en/wordboxes/"
+        name = input("WordBox name: ")
+        payload = {"name": name}
+        r = s.post(url, json=payload)
+        print(r)
         print(json.dumps(r.json(), indent=2))
         input("Press enter to continue...")
 
