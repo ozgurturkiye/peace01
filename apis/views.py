@@ -91,6 +91,58 @@ def english_detail(request, word):
 
 @api_view(["GET", "POST", "DELETE"])
 @permission_classes([permissions.IsAuthenticated])
+def english_synonyms_list(request, word):
+    english = get_object_or_404(English, name=word)
+
+    if request.method == "GET":
+        synonyms = english.synonyms.all()
+        serializer = EnglishSerializer(synonyms, many=True)
+        return Response(serializer.data)
+
+    elif request.method == "POST":
+        serializer = WordListSerializer(data=request.data)
+        if serializer.is_valid():
+            # Check data length and cat list to set for unique items
+            incoming_words = word_list_check(serializer.data["words"])
+
+            # Get or Create Turkish word and english.translations
+            for word in incoming_words:
+                obj, created = English.objects.get_or_create(
+                    name=word,
+                )
+                english.synonyms.add(obj)
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == "DELETE":
+        serializer = WordListSerializer(data=request.data)
+        if serializer.is_valid():
+            # Check data length and cat list to set for unique items
+            incoming_words = word_list_check(serializer.data["words"])
+            print(incoming_words)
+            # Get synonyms
+            words = english.synonyms.filter(name__in=incoming_words)
+
+            # If words is not in list return error
+            unknown_words = []
+            for word in incoming_words:
+                if not words.filter(name=word):
+                    unknown_words.append(word)
+            if unknown_words:
+                return Response(
+                    {"detail": "Error", "unknown_words": unknown_words},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            # Delete selected words from synonyms
+            for word in words:
+                english.synonyms.remove(word)
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["GET", "POST", "DELETE"])
+@permission_classes([permissions.IsAuthenticated])
 def english_translation_list(request, word):
     english = get_object_or_404(English, name=word)
 
@@ -120,10 +172,12 @@ def english_translation_list(request, word):
             # Check data length and cat list to set for unique items
             incoming_words = word_list_check(serializer.data["words"])
 
-            # Get translations word
+            # Get translations word by name
             words = Turkish.objects.filter(
                 translations=english, name__in=incoming_words
             )
+
+            # If words is not in list return error
             unknown_words = []
             for word in incoming_words:
                 if not words.filter(name=word):

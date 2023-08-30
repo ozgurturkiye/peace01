@@ -7,11 +7,11 @@ urlpatterns = [
     path("", views.home, name="home"),
     path("en/words/", views.english_list, name="english-list"),
     path("en/words/<word>/", views.english_detail, name="english-detail"),
-    # path(
-    #     "en/words/<word>/synonyms/",
-    #     views.english_synonyms_list,
-    #     name="english-synonyms-list",
-    # ),
+    path(
+        "en/words/<word>/synonyms/",
+        views.english_synonyms_list,
+        name="english-synonyms-list",
+    ),
     path(
         "en/words/<word>/translations/",
         views.english_translation_list,
