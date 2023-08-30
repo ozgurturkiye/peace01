@@ -80,10 +80,12 @@ while True:
         elif choice == "2":
             translations = input("Enter comma seperator word: ")
             translations = translations.split(",")
-            payload = {"translations": translations}
+            payload = {"words": translations}
             r = s.post(url, json=payload)
             print(r)
             print(json.dumps(r.json(), indent=2))
+        elif choice == "3":
+            pass
 
         input("Press enter to continue...")
     elif choice == "4":
