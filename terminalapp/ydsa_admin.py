@@ -35,7 +35,7 @@ choices = (
     "Play a Single Word Game",
     "Retrieve all WordBoxes",
     "Create a new WordBox",
-    "Retrieve a single WordBox",
+    "Retrieve, Update or Delete a WordBox",
 )
 message = "Please select what you want?\n"
 for index, value in enumerate(choices, start=1):
@@ -56,6 +56,26 @@ def word_many_to_many(base_url, method):
     r = method(base_url, json=payload)
     print(r)
     print(json.dumps(r.json(), indent=2))
+
+
+def get_wordbox(base_url):
+    r = s.get(base_url)
+    wb_list = r.json()["personal"] + r.json()["friend"]
+    print("Choose WordBox You want to work on:")
+    for index, value in enumerate(wb_list, start=1):
+        print(index, value["name"])
+
+    try:
+        choice = int(input("Choose WordBox Number: "))
+        choice -= 1
+    except ValueError as e:
+        print("input must be valid number")
+        exit()
+    try:
+        return wb_list[choice]
+    except IndexError as e:
+        print("input must be valid index")
+        exit()
 
 
 # Main loop
@@ -154,6 +174,25 @@ while True:
         r = s.post(url, json=payload)
         print(r)
         print(json.dumps(r.json(), indent=2))
+        input("Press enter to continue...")
+    elif choice == "9":
+        url = "http://127.0.0.1:8000/api/en/wordboxes/"
+        wordbox = get_wordbox(url)
+        print(wordbox)
+
+        choice = input(
+            """
+        1 - Update
+        2 - Delete
+        : """
+        )
+        if choice == "1":
+            url = f"http://127.0.0.1:8000/api/en/wordboxes/{wordbox['id']}/"
+            name = input("Enter the correct spelling: ")
+            payload = {"name": name}
+            r = s.put(url, json=payload)
+            print(r)
+            print(json.dumps(r.json(), indent=2))
         input("Press enter to continue...")
 
     elif choice == "Q" or choice == "q":
