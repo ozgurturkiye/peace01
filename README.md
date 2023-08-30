@@ -16,10 +16,10 @@ Here are the currently supported API Endpoints.
 | DELETE    | English               | Delete an existing English                         | /api/en/words/{word}/              |
 | GET       | Collection of Turkish | Retrieve a collection of Turkish from translations | /api/en/words/{word}/translations/ |
 | POST      | Collection of Turkish | Append a collection of Turkish from translations   | /api/en/words/{word}/translations/ |
-| DELETE    | Collection of Turkish | Delete a collection of Turkish from translations   | /api/en/words/{word}/translations/ |
+| DELETE    | Collection of Turkish | Remove a collection of Turkish from translations   | /api/en/words/{word}/translations/ |
 | GET       | Collection of English | Retrieve a collection of English from translations | /api/en/words/{word}/synonyms/     |
 | POST      | Collection of English | Append a collection of English from translations   | /api/en/words/{word}/synonyms/     |
-| DELETE    | Collection of Turkish | Delete a collection of Turkish from translations   | /api/en/words/{word}/synonyms/     |
+| DELETE    | Collection of Turkish | Remove a collection of Turkish from translations   | /api/en/words/{word}/synonyms/     |
 | GET       | Collection of Game    | Retrieve all Games in the collection               | /api/en/games/                     |
 | GET       | Game                  | Retrieve a single Game                             | /api/en/games/{game_name}/         |
 | GET       | Game                  | Retrieve a single Game to play                     | /api/en/games/{game_name}/start/   |
@@ -33,10 +33,10 @@ Here are the currently supported API Endpoints.
 | POST      | WordBox               | Update or Create Score in the collection           | /api/en/wordboxes/{int:pk}/start/  |
 | GET       | Collection of English | Retrieve a collection of word in WordBox           | /api/en/wordboxes/{int:pk}/words/  |
 | POST      | Collection of English | Append a collection of word in the WordBox         | /api/en/wordboxes/{int:pk}/words/  |
-| DELETE    | Collection of English | Delete a collection of word in the WordBox         | /api/en/wordboxes/{int:pk}/words/  |
+| DELETE    | Collection of English | Remove a collection of word in the WordBox         | /api/en/wordboxes/{int:pk}/words/  |
 | GET       | Collection of User    | Retrieve a collection of user in WordBox           | /api/en/wordboxes/{int:pk}/users/  |
 | POST      | Collection of User    | Append a collection of user in the WordBox         | /api/en/wordboxes/{int:pk}/users/  |
-| DELETE    | Collection of User    | Delete a collection of user in the WordBox         | /api/en/wordboxes/{int:pk}/users/  |
+| DELETE    | Collection of User    | Remove a collection of user in the WordBox         | /api/en/wordboxes/{int:pk}/users/  |
 
 ## Getting Started
 UML:

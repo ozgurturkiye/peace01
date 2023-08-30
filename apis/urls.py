@@ -5,6 +5,7 @@ from . import views
 app_name = "api"
 urlpatterns = [
     path("", views.home, name="home"),
+    path("login-test-page/", views.login_test_page, name="login-text-page"),
     path("en/words/", views.english_list, name="english-list"),
     path("en/words/<word>/", views.english_detail, name="english-detail"),
     path(

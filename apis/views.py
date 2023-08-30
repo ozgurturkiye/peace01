@@ -36,6 +36,12 @@ def word_list_check(items):
 
 
 @api_view()
+@permission_classes([permissions.IsAuthenticated])
+def login_test_page(request):
+    return Response({"detail": "Logged successfully"})
+
+
+@api_view()
 def home(request):
     base_url = "http://127.0.0.1:8000/api/"
     return Response({"detail": "Welcome to home page", "home": base_url})
@@ -55,7 +61,7 @@ def english_list(request):
             try:
                 English.objects.create(
                     name=serializer.validated_data["name"],
-                    word_type=serializer.validated_data["word_type"],
+                    word_type=serializer.validated_data.get("word_type"),
                 )
             except IntegrityError as e:
                 return Response({"detail": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
