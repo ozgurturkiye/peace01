@@ -7,8 +7,9 @@ from rest_framework import status, permissions
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 
-from words.models import English, Game, SingleWordGame, WordBox, WordBoxDetail
+from words.models import English, Game, SingleWordGame, WordBox, WordBoxDetail, Turkish
 from .serializers import (
+    TurkishSerializer,
     EnglishSerializer,
     GameSerializer,
     SingleWordSerializer,
@@ -16,10 +17,22 @@ from .serializers import (
     WordBoxDetailSerializer,
     WordBoxGameEnglishSerializer,
     WordBoxGameInputSerializer,
-    WordBoxWordSerializer,
+    WordListSerializer,
     UserSerializer,
     WordBoxUserSerializer,
 )
+
+
+# Check word_list and limit length
+def word_list_check(items):
+    # To prevent duplicated word cast to set
+    items = set(items)
+
+    # To prevent too long list
+    if len(items) > 100:
+        return Response({"detail": "Error! Too long items in list."})
+
+    return items
 
 
 @api_view()
@@ -29,6 +42,7 @@ def home(request):
 
 
 @api_view(["GET", "POST"])
+@permission_classes([permissions.IsAuthenticated])
 def english_list(request):
     if request.method == "GET":
         words = English.objects.all()
@@ -50,6 +64,7 @@ def english_list(request):
 
 
 @api_view(["GET", "PUT", "DELETE"])
+@permission_classes([permissions.IsAuthenticated])
 def english_detail(request, word):
     word = get_object_or_404(English, name=word)
 
@@ -72,6 +87,58 @@ def english_detail(request, word):
             {"detail": "Error! Only admin can delete"},
             status=status.HTTP_400_BAD_REQUEST,
         )
+
+
+@api_view(["GET", "POST", "DELETE"])
+@permission_classes([permissions.IsAuthenticated])
+def english_translation_list(request, word):
+    english = get_object_or_404(English, name=word)
+
+    if request.method == "GET":
+        translations = english.translations.all()
+        serializer = TurkishSerializer(translations, many=True)
+        return Response(serializer.data)
+
+    elif request.method == "POST":
+        serializer = WordListSerializer(data=request.data)
+        if serializer.is_valid():
+            # Check data length and cat list to set for unique items
+            incoming_words = word_list_check(serializer.data["words"])
+
+            # Get or Create Turkish word and english.translations
+            for turkish in incoming_words:
+                obj, created = Turkish.objects.get_or_create(
+                    name=turkish,
+                )
+                english.translations.add(obj)
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == "DELETE":
+        serializer = WordListSerializer(data=request.data)
+        if serializer.is_valid():
+            # Check data length and cat list to set for unique items
+            incoming_words = word_list_check(serializer.data["words"])
+
+            # Get translations word
+            words = Turkish.objects.filter(
+                translations=english, name__in=incoming_words
+            )
+            unknown_words = []
+            for word in incoming_words:
+                if not words.filter(name=word):
+                    unknown_words.append(word)
+            if unknown_words:
+                return Response(
+                    {"detail": "Error", "unknown_words": unknown_words},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            # Delete selected words from WordBox
+            for word in words:
+                english.translations.remove(word)
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["GET"])
@@ -323,14 +390,10 @@ def wordbox_word_list(request, pk):
         return Response(serializer.data)
 
     elif request.method == "POST":
-        serializer = WordBoxWordSerializer(data=request.data)
+        serializer = WordListSerializer(data=request.data)
         if serializer.is_valid():
-            # To prevent duplicated word cast to set
-            incoming_words = set(serializer.data["words"])
-
-            # To prevent too long list
-            if len(incoming_words) > 100:
-                return Response({"detail": "Error! Too long words list."})
+            # Check data length and cat list to set for unique items
+            incoming_words = word_list_check(serializer.data["words"])
 
             # Get word list by name in the list
             words = English.objects.filter(name__in=incoming_words)
@@ -351,14 +414,10 @@ def wordbox_word_list(request, pk):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == "DELETE":
-        serializer = WordBoxWordSerializer(data=request.data)
+        serializer = WordListSerializer(data=request.data)
         if serializer.is_valid():
-            # To prevent duplicated word cast to set
-            incoming_words = set(serializer.data["words"])
-
-            # To prevent too long list
-            if len(incoming_words) > 100:
-                return Response({"detail": "Error! Too long word list."})
+            # Check data length and cat list to set for unique items
+            incoming_words = word_list_check(serializer.data["words"])
 
             # Get words in WordBox
             words = English.objects.filter(wordbox=wordbox, name__in=incoming_words)
@@ -394,12 +453,8 @@ def wordbox_user_list(request, pk):
         serializer = WordBoxUserSerializer(data=request.data)
 
         if serializer.is_valid():
-            # To prevent duplicated users cast to set
-            incoming_users = set(serializer.data["users"])
-
-            # To prevent too long list
-            if len(incoming_users) > 100:
-                return Response({"detail": "Error! Too long users list."})
+            # Check data length and cat list to set for unique items
+            incoming_users = word_list_check(serializer.data["users"])
 
             # Get user list by name in the list
             users = get_user_model().objects.filter(username__in=incoming_users)
@@ -423,12 +478,8 @@ def wordbox_user_list(request, pk):
     elif request.method == "DELETE":
         serializer = WordBoxUserSerializer(data=request.data)
         if serializer.is_valid():
-            # To prevent duplicated word cast to set
-            incoming_users = set(serializer.data["users"])
-
-            # To prevent too long list
-            if len(incoming_users) > 100:
-                return Response({"detail": "Error! Too long users list."})
+            # Check data length and cat list to set for unique items
+            incoming_users = word_list_check(serializer.data["users"])
 
             # Get user list by name in the list
             users = get_user_model().objects.filter(

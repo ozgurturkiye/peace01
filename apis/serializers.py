@@ -63,7 +63,7 @@ class WordBoxGameInputSerializer(serializers.Serializer):
     turkish = serializers.CharField(max_length=50)
 
 
-class WordBoxWordSerializer(serializers.Serializer):
+class WordListSerializer(serializers.Serializer):
     """This is a List serializer for WordBoxWord"""
 
     words = serializers.ListSerializer(child=serializers.CharField(max_length=50))
