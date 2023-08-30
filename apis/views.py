@@ -248,6 +248,10 @@ def single_word_start(request):
             )
             # Increase number of play
             obj.increase_number_of_play()
+            # Get all translation for feedback
+            translations = []
+            for i in english.translations.only("name"):
+                translations.append(i.name)
 
             # Choose different word so exclude answered english word
             word = English.objects.order_by("?").exclude(name=english).first()
@@ -255,6 +259,7 @@ def single_word_start(request):
             return Response(
                 {
                     "detail": obj.answer_status,
+                    "translations": translations,
                     "english": word.name,
                 }
             )

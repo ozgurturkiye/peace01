@@ -32,7 +32,7 @@ choices = (
     "Retrieve a single word",
     "Update an existing word",
     "Delete an existing word",
-    "Retrieve all games",
+    "Play Single Word Game",
     "Retrieve all WordBoxes",
     "Create a new WordBox",
     "Retrieve a single WordBox",
@@ -127,5 +127,26 @@ while True:
         r = s.delete(url)
         print(r)
         input("Press enter to continue...")
+    elif choice == "6":
+        url = "http://127.0.0.1:8000/api/en/games/single-word/start/"
+        r = s.get(url)
+        print(r, r.json())
+        print("If you want quit enter Q or q!")
+        while True:
+            english = r.json().get("english")
+            answer = input(f"{english}: ")
+            if answer in ("Q", "q"):
+                break
+            elif answer == "":
+                continue
+            payload = {"english": english, "turkish": answer}
+            r = s.post(url, json=payload)
+            print(r, r.json())
+    elif choice == "7":
+        url = "http://127.0.0.1:8000/api/en/wordboxes/"
+        r = s.get(url)
+        print(json.dumps(r.json(), indent=2))
+        input("Press enter to continue...")
+
     elif choice == "Q" or choice == "q":
         break
