@@ -65,17 +65,15 @@ def get_wordbox(base_url):
     for index, value in enumerate(wb_list, start=1):
         print(index, value["name"])
 
-    try:
-        choice = int(input("Choose WordBox Number: "))
-        choice -= 1
-    except ValueError as e:
-        print("input must be valid number")
-        exit()
-    try:
-        return wb_list[choice]
-    except IndexError as e:
-        print("input must be valid index")
-        exit()
+    while True:
+        try:
+            choice = int(input("Choose WordBox Number: ")) - 1
+            wb = wb_list[choice]
+            break
+        except (ValueError, IndexError) as e:
+            print("input must be valid")
+
+    return wb
 
 
 # Main loop
@@ -178,21 +176,24 @@ while True:
     elif choice == "9":
         url = "http://127.0.0.1:8000/api/en/wordboxes/"
         wordbox = get_wordbox(url)
+        url = f"http://127.0.0.1:8000/api/en/wordboxes/{wordbox['id']}/"
         print(wordbox)
 
         choice = input(
             """
         1 - Update
-        2 - Delete
-        : """
+        2 - Delete\n"""
         )
         if choice == "1":
-            url = f"http://127.0.0.1:8000/api/en/wordboxes/{wordbox['id']}/"
             name = input("Enter the correct spelling: ")
             payload = {"name": name}
             r = s.put(url, json=payload)
             print(r)
             print(json.dumps(r.json(), indent=2))
+        elif choice == "2":
+            r = s.delete(url)
+            print(r)
+
         input("Press enter to continue...")
 
     elif choice == "Q" or choice == "q":
