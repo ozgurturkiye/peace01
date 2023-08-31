@@ -24,50 +24,47 @@ def check_connection():
 
 check_connection()
 
+
 # Enumerate choices
-choices = (
-    "Retrieve all words",
-    "Create a new word",
-    "Retrieve a single word",
-    "Update an existing word",
-    "Delete an existing word",
-    "Play a Single Word Game",
-    "Retrieve all WordBoxes",
-    "Create a new WordBox",
-    "Retrieve, Update or Delete a WordBox",
-    "Play a WordBox Game",
-)
-message = "Please select what you want?\n"
-for index, value in enumerate(choices, start=1):
-    message += f"{index} - {value}\n"
-message += "Q - Quit\n Make your choice...\n"
+def prepare_choices():
+    choices = (
+        "Retrieve all words",
+        "Create a new word",
+        "Retrieve a single word",
+        "Update an existing word",
+        "Delete an existing word",
+        "Play a Single Word Game",
+        "Retrieve all WordBoxes",
+        "Create a new WordBox",
+        "Retrieve, Update or Delete a WordBox",
+        "Play a WordBox Game",
+    )
+    message = "Please select what you want?\n"
+    for index, value in enumerate(choices, start=1):
+        message += f"{index} - {value}\n"
+    message += "Q - Quit\n Make your choice or Q to quit...\n"
+    return message
 
 
-def get_words():
+message = prepare_choices()
+
+
+def get_word_list():
     url = "http://127.0.0.1:8000/api/en/words/"
-    r = s.get(url)
-    print(json.dumps(r.json(), indent=2))
-    input("Press enter to continue...")
+    return s.get(url)
 
 
 def post_word():
     url = "http://127.0.0.1:8000/api/en/words/"
-    while True:
-        english = input("Word: ")
-        payload = {"name": english}
-        r = s.post(url, json=payload)
-        print(r)
-        print(json.dumps(r.json(), indent=2))
-        choice = input("To add new word press Enter or quit enter Q or q ...")
-        if choice == "Q" or choice == "q":
-            break
+    english = input("Word: ")
+    payload = {"name": english}
+    return s.post(url, json=payload)
 
 
 def get_word():
     english = input("Word: ")
     url = f"http://127.0.0.1:8000/api/en/words/{english}/"
-    r = s.get(url)
-    return r
+    return s.get(url)
 
 
 def put_word():
@@ -75,28 +72,22 @@ def put_word():
     url = f"http://127.0.0.1:8000/api/en/words/{english}/"
     new_english = input("Enter the correct spelling: ")
     payload = {"name": new_english}
-    r = s.put(url, json=payload)
-    print(r)
-    print(json.dumps(r.json(), indent=2))
-    input("Press enter to continue...")
+    return s.put(url, json=payload)
 
 
 def delete_word():
     english = input("Word: ")
     url = f"http://127.0.0.1:8000/api/en/words/{english}/"
-    r = s.delete(url)
-    print(r)
-    input("Press enter to continue...")
+    return s.delete(url)
 
 
-def word_many_to_many_get(base_url):
+def get_translations_or_synonyms(base_url):
     r = s.get(base_url)
     print(r)
     print(json.dumps(r.json(), indent=2))
-    return r
 
 
-def word_many_to_many_post(base_url):
+def post_translations_or_synonyms(base_url):
     words = input("Enter comma separated words: ")
     words = words.split(",")
     payload = {"words": words}
@@ -105,7 +96,7 @@ def word_many_to_many_post(base_url):
     print(json.dumps(r.json(), indent=2))
 
 
-def word_many_to_many_delete(base_url):
+def remove_translations_or_synonyms(base_url):
     words = input("Enter comma separated words: ")
     words = words.split(",")
     payload = {"words": words}
@@ -116,24 +107,18 @@ def word_many_to_many_delete(base_url):
 
 def get_wordboxes():
     url = "http://127.0.0.1:8000/api/en/wordboxes/"
-    r = s.get(url)
-    print(json.dumps(r.json(), indent=2))
-    input("Press enter to continue...")
+    return s.get(url)
 
 
 def post_wordboxes():
     url = "http://127.0.0.1:8000/api/en/wordboxes/"
     name = input("WordBox name: ")
     payload = {"name": name}
-    r = s.post(url, json=payload)
-    print(r)
-    print(json.dumps(r.json(), indent=2))
-    input("Press enter to continue...")
+    return s.post(url, json=payload)
 
 
-def get_wordbox():
-    url = "http://127.0.0.1:8000/api/en/wordboxes/"
-    r = s.get(url)
+def get_wordbox_url():
+    r = get_wordboxes()
     wordbox_list = r.json()["personal"] + r.json()["friend"]
     print("Choose WordBox You want to work on:")
     for index, value in enumerate(wordbox_list, start=1):
@@ -142,12 +127,12 @@ def get_wordbox():
     while True:
         try:
             choice = int(input("Choose WordBox Number: ")) - 1
-            wordbox = wordbox_list[choice]
+            wordbox_id = wordbox_list[choice]["id"]
             break
         except (ValueError, IndexError) as e:
             print("input must be valid")
 
-    return wordbox
+    return f"http://127.0.0.1:8000/api/en/wordboxes/{wordbox_id}/"
 
 
 # Main loop
@@ -155,11 +140,20 @@ while True:
     choice = input(message)
 
     if choice == "1":
-        get_words()
+        r = get_word_list()
+        print(json.dumps(r.json(), indent=2))
+        input("Press enter to continue...")
     elif choice == "2":
-        post_word()
+        while True:
+            r = post_word()
+            print(r)
+            print(json.dumps(r.json(), indent=2))
+            choice = input("To add new word press Enter or quit enter Q or q ...")
+            if choice == "Q" or choice == "q":
+                break
     elif choice == "3":
         r = get_word()
+        print(json.dumps(r.json(), indent=2))
         url_translations = r.url + "translations/"
         url_synonyms = r.url + "synonyms/"
         choice = input(
@@ -174,26 +168,31 @@ while True:
             """
         )
         if choice == "1":
-            word_many_to_many_get(url_translations)
+            get_translations_or_synonyms(url_translations)
         elif choice == "2":
-            word_many_to_many_post(url_translations)
+            post_translations_or_synonyms(url_translations)
         elif choice == "3":
-            word_many_to_many_post(url_translations)
+            remove_translations_or_synonyms(url_translations)
         elif choice == "4":
-            word_many_to_many_get(url_synonyms)
+            get_translations_or_synonyms(url_synonyms)
         elif choice == "5":
-            word_many_to_many_post(url_synonyms)
+            post_translations_or_synonyms(url_synonyms)
         elif choice == "6":
-            word_many_to_many_post(url_synonyms)
+            remove_translations_or_synonyms(url_synonyms)
         input("Press enter to continue...")
     elif choice == "4":
-        put_word()
+        r = put_word()
+        print(r)
+        print(json.dumps(r.json(), indent=2))
+        input("Press enter to continue...")
     elif choice == "5":
-        delete_word()
+        r = delete_word()
+        print(r)
+        input("Press enter to continue...")
     elif choice == "6":
         url = "http://127.0.0.1:8000/api/en/games/single-word/start/"
         r = s.get(url)
-        print(r, r.json())
+        print(r)
         print("If you want quit enter Q or q!")
         while True:
             english = r.json().get("english")
@@ -206,39 +205,49 @@ while True:
             r = s.post(url, json=payload)
             print(r, r.json())
     elif choice == "7":
-        get_wordboxes()
+        r = get_wordboxes()
+        print(json.dumps(r.json(), indent=2))
+        input("Press enter to continue...")
     elif choice == "8":
-        post_wordboxes()
+        r = post_wordboxes()
+        print(r)
+        print(json.dumps(r.json(), indent=2))
+        input("Press enter to continue...")
     elif choice == "9":
-        wordbox = get_wordbox()
-        url = f"http://127.0.0.1:8000/api/en/wordboxes/{wordbox['id']}/"
-        print(wordbox)
+        url = get_wordbox_url()
 
         choice = input(
             """
-        1 - Update
-        2 - Delete\n"""
+        1 - Get
+        2 - Update
+        3 - Delete\n"""
         )
         if choice == "1":
+            r = s.get(url)
+            print(r)
+            print(json.dumps(r.json(), indent=2))
+        elif choice == "2":
             name = input("Enter the correct spelling: ")
             payload = {"name": name}
             r = s.put(url, json=payload)
             print(r)
             print(json.dumps(r.json(), indent=2))
-        elif choice == "2":
+        elif choice == "3":
             r = s.delete(url)
             print(r)
 
         input("Press enter to continue...")
     elif choice == "10":
-        wordbox = get_wordbox()
-        url = f"http://127.0.0.1:8000/api/en/wordboxes/{wordbox['id']}/start/"
-        print(wordbox)
+        url = get_wordbox_url()
+        url += "start/"
         r = s.get(url)
         print(r, r.json())
         while True:
             english = r.json().get("english")
-            answer = input(f"{english}: ")
+            if english:
+                answer = input(f"{english}: ")
+            else:
+                answer = input("To continue press enter or Quit press Q ")
             if answer in ("Q", "q"):
                 break
             # elif answer == "":
