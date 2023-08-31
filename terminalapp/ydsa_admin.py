@@ -8,7 +8,6 @@ s = requests.Session()
 # username = input("Username: ")
 # password = input("Password: ")
 username, password = "ozgur", 123
-
 s.auth = (username, password)
 
 
@@ -44,32 +43,49 @@ for index, value in enumerate(choices, start=1):
 message += "Q - Quit\n Make your choice...\n"
 
 
-def word_many_to_many(base_url, method):
-    if method == s.get:
-        r = method(base_url)
-        print(r)
-        print(json.dumps(r.json(), indent=2))
-        return
+def get_word():
+    english = input("Word: ")
+    url = f"http://127.0.0.1:8000/api/en/words/{english}/"
+    r = s.get(url)
+    return r
 
+
+def word_many_to_many_get(base_url):
+    r = s.get(base_url)
+    print(r)
+    print(json.dumps(r.json(), indent=2))
+    return r
+
+
+def word_many_to_many_post(base_url):
     words = input("Enter comma separated words: ")
     words = words.split(",")
     payload = {"words": words}
-    r = method(base_url, json=payload)
+    r = s.post(base_url, json=payload)
+    print(r)
+    print(json.dumps(r.json(), indent=2))
+
+
+def word_many_to_many_delete(base_url):
+    words = input("Enter comma separated words: ")
+    words = words.split(",")
+    payload = {"words": words}
+    r = s.delete(base_url, json=payload)
     print(r)
     print(json.dumps(r.json(), indent=2))
 
 
 def get_wordbox(base_url):
     r = s.get(base_url)
-    wb_list = r.json()["personal"] + r.json()["friend"]
+    wordbox_list = r.json()["personal"] + r.json()["friend"]
     print("Choose WordBox You want to work on:")
-    for index, value in enumerate(wb_list, start=1):
+    for index, value in enumerate(wordbox_list, start=1):
         print(index, value["name"])
 
     while True:
         try:
             choice = int(input("Choose WordBox Number: ")) - 1
-            wordbox = wb_list[choice]
+            wordbox = wordbox_list[choice]
             break
         except (ValueError, IndexError) as e:
             print("input must be valid")
@@ -98,11 +114,9 @@ while True:
             if choice == "Q" or choice == "q":
                 break
     elif choice == "3":
-        english = input("Word: ")
-        url = f"http://127.0.0.1:8000/api/en/words/{english}/"
-        r = s.get(url)
-        print(r)
-        print(json.dumps(r.json(), indent=2))
+        r = get_word()
+        url_translations = r.url + "translations/"
+        url_synonyms = r.url + "synonyms/"
         choice = input(
             """
             1 - Retrieve a collection of Turkish from translations
@@ -114,21 +128,19 @@ while True:
             Please select choices\n
             """
         )
-        url_translations = url + "translations/"
-        url_synonyms = url + "synonyms/"
 
         if choice == "1":
-            word_many_to_many(url_translations, s.get)
+            word_many_to_many_get(url_translations)
         elif choice == "2":
-            word_many_to_many(url_translations, s.post)
+            word_many_to_many_post(url_translations)
         elif choice == "3":
-            word_many_to_many(url_translations, s.post)
+            word_many_to_many_post(url_translations)
         elif choice == "4":
-            word_many_to_many(url_synonyms, s.get)
+            word_many_to_many_get(url_synonyms)
         elif choice == "5":
-            word_many_to_many(url_synonyms, s.post)
+            word_many_to_many_post(url_synonyms)
         elif choice == "6":
-            word_many_to_many(url_synonyms, s.post)
+            word_many_to_many_post(url_synonyms)
 
         input("Press enter to continue...")
     elif choice == "4":
