@@ -36,6 +36,7 @@ choices = (
     "Retrieve all WordBoxes",
     "Create a new WordBox",
     "Retrieve, Update or Delete a WordBox",
+    "Play a WordBox Game",
 )
 message = "Please select what you want?\n"
 for index, value in enumerate(choices, start=1):
@@ -68,12 +69,12 @@ def get_wordbox(base_url):
     while True:
         try:
             choice = int(input("Choose WordBox Number: ")) - 1
-            wb = wb_list[choice]
+            wordbox = wb_list[choice]
             break
         except (ValueError, IndexError) as e:
             print("input must be valid")
 
-    return wb
+    return wordbox
 
 
 # Main loop
@@ -195,6 +196,23 @@ while True:
             print(r)
 
         input("Press enter to continue...")
+    elif choice == "10":
+        url = "http://127.0.0.1:8000/api/en/wordboxes/"
+        wordbox = get_wordbox(url)
+        url = f"http://127.0.0.1:8000/api/en/wordboxes/{wordbox['id']}/start/"
+        print(wordbox)
+        r = s.get(url)
+        print(r, r.json())
+        while True:
+            english = r.json().get("english")
+            answer = input(f"{english}: ")
+            if answer in ("Q", "q"):
+                break
+            # elif answer == "":
+            #     continue
+            payload = {"turkish": answer}
+            r = s.post(url, json=payload)
+            print(r, r.json())
 
     elif choice == "Q" or choice == "q":
         break

@@ -1,5 +1,5 @@
 from django.urls import reverse
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.db import IntegrityError
 from django.contrib.auth import get_user_model
 
@@ -435,6 +435,7 @@ def wordbox_start(request, pk):
                 }
             )
         else:
+            return redirect("api:wordbox-start", pk)
             return Response(
                 {
                     "detail": "First you have to choose your wordbox. To start go to start page",
