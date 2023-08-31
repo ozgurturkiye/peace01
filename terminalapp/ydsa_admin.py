@@ -43,6 +43,26 @@ for index, value in enumerate(choices, start=1):
 message += "Q - Quit\n Make your choice...\n"
 
 
+def get_words():
+    url = "http://127.0.0.1:8000/api/en/words/"
+    r = s.get(url)
+    print(json.dumps(r.json(), indent=2))
+    input("Press enter to continue...")
+
+
+def post_word():
+    url = "http://127.0.0.1:8000/api/en/words/"
+    while True:
+        english = input("Word: ")
+        payload = {"name": english}
+        r = s.post(url, json=payload)
+        print(r)
+        print(json.dumps(r.json(), indent=2))
+        choice = input("To add new word press Enter or quit enter Q or q ...")
+        if choice == "Q" or choice == "q":
+            break
+
+
 def get_word():
     english = input("Word: ")
     url = f"http://127.0.0.1:8000/api/en/words/{english}/"
@@ -135,21 +155,9 @@ while True:
     choice = input(message)
 
     if choice == "1":
-        url = "http://127.0.0.1:8000/api/en/words/"
-        r = s.get(url)
-        print(json.dumps(r.json(), indent=2))
-        input("Press enter to continue...")
+        get_words()
     elif choice == "2":
-        url = "http://127.0.0.1:8000/api/en/words/"
-        while True:
-            english = input("Word: ")
-            payload = {"name": english}
-            r = s.post(url, json=payload)
-            print(r)
-            print(json.dumps(r.json(), indent=2))
-            choice = input("To add new word press Enter or quit enter Q or q ...")
-            if choice == "Q" or choice == "q":
-                break
+        post_word()
     elif choice == "3":
         r = get_word()
         url_translations = r.url + "translations/"
@@ -165,7 +173,6 @@ while True:
             Please select choices\n
             """
         )
-
         if choice == "1":
             word_many_to_many_get(url_translations)
         elif choice == "2":
@@ -178,7 +185,6 @@ while True:
             word_many_to_many_post(url_synonyms)
         elif choice == "6":
             word_many_to_many_post(url_synonyms)
-
         input("Press enter to continue...")
     elif choice == "4":
         put_word()
