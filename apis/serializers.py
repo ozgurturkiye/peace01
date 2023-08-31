@@ -69,13 +69,13 @@ class WordListSerializer(serializers.Serializer):
     words = serializers.ListSerializer(child=serializers.CharField(max_length=50))
 
 
+class UserListSerializer(serializers.Serializer):
+    """This is a List serializer for WordBoxWord"""
+
+    users = serializers.ListSerializer(child=serializers.CharField(max_length=50))
+
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
         fields = ["id", "username"]
-
-
-class WordBoxUserSerializer(serializers.Serializer):
-    """This is a List serializer for WordBoxUser"""
-
-    users = serializers.ListSerializer(child=serializers.CharField(max_length=50))

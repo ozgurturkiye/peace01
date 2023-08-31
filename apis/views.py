@@ -18,8 +18,8 @@ from .serializers import (
     WordBoxGameEnglishSerializer,
     WordBoxGameInputSerializer,
     WordListSerializer,
+    UserListSerializer,
     UserSerializer,
-    WordBoxUserSerializer,
 )
 
 
@@ -516,7 +516,7 @@ def wordbox_user_list(request, pk):
         return Response(serializer.data)
 
     elif request.method == "POST":
-        serializer = WordBoxUserSerializer(data=request.data)
+        serializer = UserListSerializer(data=request.data)
 
         if serializer.is_valid():
             # Check data length and cat list to set for unique items
@@ -542,20 +542,19 @@ def wordbox_user_list(request, pk):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == "DELETE":
-        serializer = WordBoxUserSerializer(data=request.data)
+        serializer = UserListSerializer(data=request.data)
         if serializer.is_valid():
             # Check data length and cat list to set for unique items
             incoming_users = word_list_check(serializer.data["users"])
 
             # Get user list by name in the list
-            users = get_user_model().objects.filter(
-                wordbox=wordbox, username__in=incoming_users
-            )
+            users = wordbox.users.filter(username__in=incoming_users)
 
             unknown_users = []
             for user in incoming_users:
                 if not users.filter(username=user):
                     unknown_users.append(user)
+
             if unknown_users:
                 return Response(
                     {"detail": "Error", "unknown_users": unknown_users},

@@ -142,7 +142,6 @@ while True:
     if choice == "1":
         r = get_word_list()
         print(json.dumps(r.json(), indent=2))
-        input("Press enter to continue...")
     elif choice == "2":
         while True:
             r = post_word()
@@ -179,16 +178,13 @@ while True:
             post_translations_or_synonyms(url_synonyms)
         elif choice == "6":
             remove_translations_or_synonyms(url_synonyms)
-        input("Press enter to continue...")
     elif choice == "4":
         r = put_word()
         print(r)
         print(json.dumps(r.json(), indent=2))
-        input("Press enter to continue...")
     elif choice == "5":
         r = delete_word()
         print(r)
-        input("Press enter to continue...")
     elif choice == "6":
         url = "http://127.0.0.1:8000/api/en/games/single-word/start/"
         r = s.get(url)
@@ -207,12 +203,10 @@ while True:
     elif choice == "7":
         r = get_wordboxes()
         print(json.dumps(r.json(), indent=2))
-        input("Press enter to continue...")
     elif choice == "8":
         r = post_wordboxes()
         print(r)
         print(json.dumps(r.json(), indent=2))
-        input("Press enter to continue...")
     elif choice == "9":
         url = get_wordbox_url()
 
@@ -235,8 +229,6 @@ while True:
         elif choice == "3":
             r = s.delete(url)
             print(r)
-
-        input("Press enter to continue...")
     elif choice == "10":
         url = get_wordbox_url()
         url += "start/"
@@ -248,13 +240,13 @@ while True:
                 answer = input(f"{english}: ")
             else:
                 answer = input("To continue press enter or Quit press Q ")
+
             if answer in ("Q", "q"):
                 break
-            # elif answer == "":
-            #     continue
             payload = {"turkish": answer}
             r = s.post(url, json=payload)
             print(r, r.json())
-
     elif choice == "Q" or choice == "q":
         break
+
+    input("Press enter to continue...")
