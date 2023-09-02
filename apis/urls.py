@@ -1,9 +1,26 @@
 from django.urls import path
 
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularRedocView,
+    SpectacularSwaggerView,
+)
+
 from . import views
 
 app_name = "api"
 urlpatterns = [
+    path("schema/", SpectacularAPIView.as_view(), name="schema"),
+    path(
+        "redoc/",
+        SpectacularRedocView.as_view(url_name="api:schema"),
+        name="redoc",
+    ),
+    path(
+        "docs/",
+        SpectacularSwaggerView.as_view(url_name="api:schema"),
+        name="docs",
+    ),
     path("", views.home, name="home"),
     path("login-test-page/", views.login_test_page, name="login-text-page"),
     path("en/words/", views.english_list, name="english-list"),
