@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "dj_rest_auth",
+    "drf_spectacular",
     # Local
     "accounts.apps.AccountsConfig",
     "words.apps.WordsConfig",
@@ -138,4 +139,12 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.TokenAuthentication",
         "rest_framework.authentication.BasicAuthentication",
     ],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "YDS Dictionary API Project",
+    "DESCRIPTION": "A sample dedicated dictionary to pass YDS exam",
+    "VERSION": "1.0.0",
+    # OTHER SETTINGS
 }
