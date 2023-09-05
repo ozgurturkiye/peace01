@@ -40,7 +40,12 @@ Here are the currently supported API Endpoints.
 
 ## Getting Started
 UML:
+
 ![UML DIAGRAM](ydsa_uml.jpg)
+
+Explicit UML:
+![UML DIAGRAM](ydsa_uml_explicit.jpg)
+
 
 ## Who need this project?
 
