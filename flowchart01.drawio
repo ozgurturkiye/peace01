@@ -1,13 +1,13 @@
-<mxfile host="app.diagrams.net" modified="2023-09-09T13:14:53.880Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36" etag="ezxMtO1vdUWnoi26PZjM" version="21.7.4" type="github">
+<mxfile host="app.diagrams.net" modified="2023-09-09T13:20:27.008Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36" etag="E-zlMEtaU8_U7MoPAEb3" version="21.7.4" type="github">
   <diagram name="Page-1" id="C6MQ5mS3NwSN0RwU6cc0">
-    <mxGraphModel dx="1122" dy="755" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="954" dy="642" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="2" value="Start" style="whiteSpace=wrap;strokeWidth=2;shape=ellipse;perimeter=ellipsePerimeter;html=1;" parent="1" vertex="1">
           <mxGeometry x="137.5" y="40" width="145" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="s3mAswLRiTs5YzUC_dCz-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="3" target="4">
+        <mxCell id="s3mAswLRiTs5YzUC_dCz-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="3" target="4" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points" />
           </mxGeometry>
@@ -18,13 +18,13 @@
         <mxCell id="4" value="User inputs Turkish word" style="rounded=1;absoluteArcSize=1;arcSize=14;whiteSpace=wrap;strokeWidth=2;" parent="1" vertex="1">
           <mxGeometry x="115" y="303" width="190" height="34" as="geometry" />
         </mxCell>
-        <mxCell id="s3mAswLRiTs5YzUC_dCz-28" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="5" target="7">
+        <mxCell id="s3mAswLRiTs5YzUC_dCz-28" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="5" target="7" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="5" value="Is Turkish translation correct?" style="rhombus;strokeWidth=2;whiteSpace=wrap;" parent="1" vertex="1">
           <mxGeometry x="142.5" y="386" width="135" height="130" as="geometry" />
         </mxCell>
-        <mxCell id="s3mAswLRiTs5YzUC_dCz-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="6" target="3">
+        <mxCell id="s3mAswLRiTs5YzUC_dCz-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="6" target="3" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="650" y="451" />
@@ -35,13 +35,13 @@
         <mxCell id="6" value="Display correct message and increase score" style="whiteSpace=wrap;strokeWidth=2;" parent="1" vertex="1">
           <mxGeometry x="370" y="434" width="260" height="34" as="geometry" />
         </mxCell>
-        <mxCell id="s3mAswLRiTs5YzUC_dCz-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="7" target="8">
+        <mxCell id="s3mAswLRiTs5YzUC_dCz-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="7" target="8" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="7" value="Display incorrect message and decrease score" style="whiteSpace=wrap;strokeWidth=2;" parent="1" vertex="1">
           <mxGeometry x="83.5" y="564" width="253" height="34" as="geometry" />
         </mxCell>
-        <mxCell id="s3mAswLRiTs5YzUC_dCz-29" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="8" target="3">
+        <mxCell id="s3mAswLRiTs5YzUC_dCz-29" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="8" target="3" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="40" y="711" />
@@ -52,7 +52,7 @@
         <mxCell id="8" value="Is score less than 0?" style="rhombus;strokeWidth=2;whiteSpace=wrap;" parent="1" vertex="1">
           <mxGeometry x="140" y="641" width="140" height="140" as="geometry" />
         </mxCell>
-        <mxCell id="s3mAswLRiTs5YzUC_dCz-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="9" target="s3mAswLRiTs5YzUC_dCz-20">
+        <mxCell id="s3mAswLRiTs5YzUC_dCz-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="9" target="s3mAswLRiTs5YzUC_dCz-20" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="9" value="Display game over message" style="whiteSpace=wrap;strokeWidth=2;" parent="1" vertex="1">
@@ -76,8 +76,11 @@
             <Array as="points" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="s3mAswLRiTs5YzUC_dCz-20" value="End" style="whiteSpace=wrap;strokeWidth=2;shape=ellipse;perimeter=ellipsePerimeter;html=1;" vertex="1" parent="1">
+        <mxCell id="s3mAswLRiTs5YzUC_dCz-20" value="End" style="whiteSpace=wrap;strokeWidth=2;shape=ellipse;perimeter=ellipsePerimeter;html=1;" parent="1" vertex="1">
           <mxGeometry x="659" y="691" width="145" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="PX9AVOCfEyBAqCwUf-88-16" value="Flow chart diagram" style="strokeWidth=1;shadow=0;dashed=0;align=center;html=1;shape=mxgraph.mockup.text.stickyNote2;fontColor=#666666;mainText=;fontSize=14;whiteSpace=wrap;fillColor=#ffffcc;strokeColor=#F62E00;" vertex="1" parent="1">
+          <mxGeometry x="600" y="7" width="160" height="143" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
