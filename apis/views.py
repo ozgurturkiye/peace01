@@ -11,6 +11,7 @@ from words.models import English, Game, SingleWordGame, WordBox, WordBoxDetail, 
 from .serializers import (
     TurkishSerializer,
     EnglishSerializer,
+    EnglishSerializer2,
     GameSerializer,
     SingleWordSerializer,
     WordBoxSerializer,
@@ -52,7 +53,7 @@ def home(request):
 def english_list(request):
     if request.method == "GET":
         words = English.objects.all()
-        serializer = EnglishSerializer(words, many=True)
+        serializer = EnglishSerializer2(words, many=True)
         return Response(serializer.data)
 
     elif request.method == "POST":

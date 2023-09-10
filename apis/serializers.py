@@ -5,6 +5,12 @@ from rest_framework import serializers
 from words.models import English, Game, WordBox, WordBoxDetail, Turkish
 
 
+class EnglishSerializerJustName(serializers.ModelSerializer):
+    class Meta:
+        model = English
+        fields = ["id", "name"]
+
+
 class TurkishSerializer(serializers.ModelSerializer):
     class Meta:
         model = Turkish
@@ -12,6 +18,21 @@ class TurkishSerializer(serializers.ModelSerializer):
 
 
 class EnglishSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = English
+        fields = [
+            "id",
+            "name",
+            "synonyms",
+            "translations",
+            "word_type",
+        ]
+
+
+class EnglishSerializer2(serializers.ModelSerializer):
+    synonyms = EnglishSerializerJustName(read_only=True, many=True)
+    translations = TurkishSerializer(read_only=True, many=True)
+
     class Meta:
         model = English
         fields = [
