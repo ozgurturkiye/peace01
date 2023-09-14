@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<django-objects version="1.0">
+    <object model="words.wordbox" pk="1">
+        <field name="name" type="CharField">one</field>
+        <field name="owner" rel="ManyToOneRel" to="accounts.customuser">1</field>
+        <field name="created_at" type="DateTimeField">2023-08-26T21:42:07.936758+00:00</field>
+        <field name="words" rel="ManyToManyRel" to="words.english"><object pk="6"></object><object pk="7"></object></field>
+        <field name="users" rel="ManyToManyRel" to="accounts.customuser"><object pk="3"></object></field>
+    </object>
+    <object model="words.wordbox" pk="2">
+        <field name="name" type="CharField">two</field>
+        <field name="owner" rel="ManyToOneRel" to="accounts.customuser">1</field>
+        <field name="created_at" type="DateTimeField">2023-08-27T22:16:04.182413+00:00</field>
+        <field name="words" rel="ManyToManyRel" to="words.english"><object pk="8"></object><object pk="9"></object></field>
+        <field name="users" rel="ManyToManyRel" to="accounts.customuser"><object pk="2"></object></field>
+    </object>
+    <object model="words.wordbox" pk="3">
+        <field name="name" type="CharField">intermediate</field>
+        <field name="owner" rel="ManyToOneRel" to="accounts.customuser">2</field>
+        <field name="created_at" type="DateTimeField">2023-08-27T22:18:38.183830+00:00</field>
+        <field name="words" rel="ManyToManyRel" to="words.english"><object pk="4"></object></field>
+        <field name="users" rel="ManyToManyRel" to="accounts.customuser"><object pk="1"></object></field>
+    </object>
+    <object model="words.wordbox" pk="4">
+        <field name="name" type="CharField">advanced</field>
+        <field name="owner" rel="ManyToOneRel" to="accounts.customuser">3</field>
+        <field name="created_at" type="DateTimeField">2023-08-27T22:19:12.829108+00:00</field>
+        <field name="words" rel="ManyToManyRel" to="words.english"><object pk="6"></object><object pk="7"></object></field>
+        <field name="users" rel="ManyToManyRel" to="accounts.customuser"></field>
+    </object>
+    <object model="words.wordbox" pk="7">
+        <field name="name" type="CharField">new1</field>
+        <field name="owner" rel="ManyToOneRel" to="accounts.customuser">1</field>
+        <field name="created_at" type="DateTimeField">2023-08-30T22:27:44.765931+00:00</field>
+        <field name="words" rel="ManyToManyRel" to="words.english"></field>
+        <field name="users" rel="ManyToManyRel" to="accounts.customuser"></field>
+    </object>
+    <object model="words.wordbox" pk="8">
+        <field name="name" type="CharField">abcabc</field>
+        <field name="owner" rel="ManyToOneRel" to="accounts.customuser">1</field>
+        <field name="created_at" type="DateTimeField">2023-08-30T23:26:56.682541+00:00</field>
+        <field name="words" rel="ManyToManyRel" to="words.english"></field>
+        <field name="users" rel="ManyToManyRel" to="accounts.customuser"></field>
+    </object>
+</django-objects>
